@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Web</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row" style="height: 100vh;">
+        <div class="col-2 col-sm-2 col-md-2 menu">
+          <div id="user-img" class="img-container mx-auto mt-3">
+            <object class="my-img mx-auto" data=""><i class="fas fa-user mx-auto"></i></object>
+          </div>
+          <div class="mt-3">
+            <p id="dash-username" class="h6 text-center text-truncate"></p>
+          </div>
+          <ul class="nav flex-column mt-5" style="margin: 0;">
+            <li class="nav-item">
+              <div class="my-nav-link py-3 mt-4 pl-3 active"><i class="far fa-comment"></i> Chats</div>
+            </li>
+            <li class="nav-item">
+              <div class="my-nav-link py-3 mt-4 pl-3"><i class="fas fa-cog"></i> Ajustes</div>
+            </li>
+          </ul>
+        </div>
+        <div class="col-12 col-sm-10 col-md-10 dashboard">
+          <div class="row mx-5 mt-4">
+            <p class="h3 title">Chats</p>
+          </div>
+          <div class="row">
+            <div class="col-4 col-sm-4 col-md-4 ml-5 mr-4 p-0 div-border-bottom busqueda">
+              <i class="fas fa-search"></i>
+              <input type="search" placeholder="Buscar contacto">
+            </div>
+            <div class="col-12 col-sm-7 col-md-7 ml-1 mr-3 p-0 div-border-bottom">
+              <p class="h5 text-sm-left font-weight-bold text-truncate margin1">Chat Web</p>
+              <p id="chat-status" class="h6 text-sm-left text-truncate margin1">En espera...</p>
+            </div>
+          </div>
+          <div class="row">
+            <div id="chats" class="col-4 col-sm-4 col-md-4 ml-5 mr-4 p-0">
+              <ul class="chat-container">
+                <!-- <li class="row chat-card">
+                  <div class="col-md-3">
+                    <div class="mini-img-container">
+                      <object data="" class="mini-img"><i class="fas fa-user"></i></object>
+                      <i class="fas fa-circle status"></i>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pt-3 px-0">
+                    <p class="h6 text-sm-left font-weight-bold text-truncate my-1">Nombre del contacto</p>
+                    <p id="last-msg" class="text-sm-left text-truncate gray"><small>Último mensaje</small></p>
+                  </div>
+                  <div class="col-md-3 pr-3 pl-0 pt-2">
+                    <p id="date-msg" class="date gray" style="text-align: right;"><small>00 Dic 2019</small></p>
+                    <div class="count-msgs">
+                      <small id="count-msg">10</small>
+                    </div>
+                  </div>
+                </li> -->
+              </ul>
+            </div>
+            <div class="col-12 col-sm-7 col-md-7 ml-1 mr-3 p-0">
+              <div id="chat">
+                <!-- <div class="row my-1 h-20">
+                  <div class="col-3 col-md-1 p-0">
+                    <div class="mini-img-container-2">
+                      <object data="" class="mini-img-2"><i class="fas fa-user"></i></object>
+                      <small class="gray hour">00:00</small>
+                    </div>
+                  </div>
+                  <div class="col-8 col-md-10 mx-1 p-0 mt-1">
+                    <div class="other-msg">
+                      <small>Mensaje del contacto</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="row h-20">
+                  <div class="col-3 col-md-1 p-0"></div>
+                  <div class="col-8 col-md-10 mx-1 p-0 mt-1">
+                    <div class="other-msg">
+                      <small>Mensaje del contacto</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="row my-1 h-20">
+                  <div class="col-3 col-md-2"></div>
+                  <div class="col-9 col-md-10">
+                    <div class="my-msg">
+                      <small>Mensaje respuesta</small>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+              <div id="emoji-container" class="emoji-container text-center pt-4 pb-3 px-3 mr-2 mb-1 row">
+                <div class="col-1 pl-1 pr-2"><i class="em em---1 emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em--1 emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-angry emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-anguished emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-astonished emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-blush emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-cold_sweat emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-confounded emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-confused emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-couplekiss emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-couple_with_heart emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-cry emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-disappointed emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-disappointed_relieved emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-dizzy_face emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-drooling_face emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-face_vomiting emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-face_with_monocle emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-face_with_hand_over_mouth emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-eyes emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-face_with_symbols_on_mouth emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-fearful emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-flushed emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-frowning emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-frowning emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-grinning emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-heart emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-heart_eyes emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-hankey emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-grin emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-hushed emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-innocent emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-kissing_heart emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-kissing_closed_eyes emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-laughing emoji"></i></div>
+                <div class="col-1 pl-1 pr-2"><i class="em em-sleeping emoji"></i></div>
+              </div>
+              <div id="message-box" class="row py-2 mr-2">
+                <div class="col-2 col-md-1 mt-2">
+                  <i id="btn-emoji" class="far fa-smile gray btn-emoji"></i>
+                </div>
+                <div class="col-8 col-md-10 p-0">
+                  <div id="chat-message" placeholder="Escribe un mensaje..." contenteditable="true" autocomplete="off"></div>
+                </div>
+                <div class="col-1 col-md-1 p-0 pl-1">
+                  <div class="btn my-btn"><i class="fas fa-location-arrow"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Nuevo usuario</h5>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input id="username" type="text" class="form-control" placeholder="Nombre de usuario" aria-label="Username" aria-describedby="basic-addon1" autofocus requerid>
+            </div>
+            <div id="noti" class="alert alert-info">Escoge un nombre</div>
+          </div>
+          <div class="modal-footer">
+            <button id="btn-new-user" type="button" class="btn btn-primary">Ingresar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+    <script src="js/dateformat.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
