@@ -118,8 +118,8 @@ function scrollable(bool = true) {
 
 $(function() {
   var username, pathimg, numclicks = 0,
-    countautomsj = 0,
     counttotmsj = 0,
+    color,
     pathmich = 'https://scontent-mia3-2.xx.fbcdn.net/v/t1.0-9/53274830_2199455340113348_920469722699399168_n.jpg?_nc_cat=106&_nc_ht=scontent-mia3-2.xx&oh=ecc8ceee8eb01150b0e78db851c494cf&oe=5D041048',
     pathpao = 'https://scontent.ftru3-1.fna.fbcdn.net/v/t1.0-9/53462628_1091758511005738_8906998264725766144_n.jpg?_nc_cat=100&_nc_ht=scontent.ftru3-1.fna&oh=489f975f8d306d1eb5df3ae69cfc233c&oe=5D202F75';
   $('#modal').modal('show');
@@ -129,16 +129,17 @@ $(function() {
   $.fn.scrollable = scrollable;
   $('#chats').scrollable();
   $('#chat').scrollable();
-  $('#emoji-container').css('display', 'none');
   $('#btn-emoji').on('click', function() {
     numclicks++;
     if (numclicks == 1) {
-      $('#emoji-container').css('display', '');
-      $('#chat').css('height', '48vh');
+      $('#emoji-container').animate({
+        bottom: '10vh'
+      }, "slow");
     }
     if (numclicks == 2) {
-      $('#emoji-container').css('display', 'none');
-      $('#chat').css('height', '70vh');
+      $('#emoji-container').animate({
+        bottom: '-500px'
+      }, "slow");
       numclicks = 0;
     }
   });
@@ -146,17 +147,27 @@ $(function() {
   var message = $('#chat-message');
   var chat = $('#chat');
   $('#btn-new-user').on('click', function(e) {
-    username = $('#username').val().trim().toLowerCase();
-    socket.emit('new user', username, bool => {
+    if (!$('#username').val()) return;
+    username = $('#username').val().trim().replace(/\s+/, ' ').toLowerCase();
+    color = getColorRandom();
+    socket.emit('new user', username, color, (bool) => {
       if (!bool) {
         $('#noti').removeClass('alert-info').addClass('alert-danger').html("Este usuario ya existe.");
       } else {
         $('#modal').modal('hide');
         if (username == "michaell") {
           $('#user-img').html(`<object class="my-img mx-auto" data="` + pathmich + `"><i class="fas fa-user mx-auto"></i></object>`);
-        }
-        if (username == "paola") {
+        } else if (username == "paola") {
           $('#user-img').html(`<object class="my-img mx-auto" data="` + pathpao + `"><i class="fas fa-user mx-auto"></i></object>`);
+        } else {
+          $('#user-img-obj').css({
+            backgroundColor: color,
+            color: "white"
+          });
+          $('#img-container').css({
+            boxShadow: "px 10px 50px 0px " + color
+          });
+          $('#user-img-obj').html(getSiglas(username));
         }
         $('#dash-username').html(username);
         $('#username').val('');
@@ -165,27 +176,34 @@ $(function() {
     });
   });
   socket.on('usernames', data => {
-    let html = '';
+    let html = '',
+      img = '';
     for (i = 0; i < data.length; i++) {
-      if (data[i] == username) continue;
-      html += `<li id="${data[i]}" class="row chat-card">
-        <div class="col-md-3">
-          <div class="mini-img-container">
-            <object data="` + ((data[i] == 'michaell') ? pathmich : (data[i] == 'paola') ? pathpao : '') + `" class="mini-img"><i class="fas fa-user"></i></object>
-            <i class="fas fa-circle status"></i>
+      if (data[i].username == username) continue;
+      if (data[i].username == 'michaell') {
+        img = `<object data="` + pathmich + `" class="mini-img"><i class="fas fa-user"></i></object>
+          <i class="fas fa-circle status"></i>`;
+      } else if (data[i].username == 'paola') {
+        img = `<object data="` + pathpao + `" class="mini-img"><i class="fas fa-user"></i></object>
+          <i class="fas fa-circle status"></i>`;
+      } else {
+        img = `<object class="mini-img" style="background-color: ${data[i].color}; color: white;">${getSiglas(data[i].username)}</object>`;
+      }
+      html += `<li id="${data[i].username}" class="row chat-card">
+          <div class="col-md-3">
+            <div class="mini-img-container" style="box-shadow: 0px 5px 20px 0px ${data[i].color};"><div class="mini-img-container">${img}</div></div>
           </div>
-        </div>
-        <div class="col-md-6 pt-3 px-0">
-          <p class="h6 text-sm-left font-weight-bold text-truncate my-1">${data[i]}</p>
-          <p id="last-msg" class="text-sm-left text-truncate gray"><small></small></p>
-        </div>
-        <div class="col-md-3 pr-3 pl-0 pt-2">
-          <p id="date-msg" class="date gray" style="text-align: right;"><small></small></p>
-          <div class="count-msgs">
-            <small id="count-msg">0</small>
+          <div class="col-md-6 pt-3 px-0">
+            <p class="h6 text-sm-left font-weight-bold text-truncate my-1">${data[i].username}</p>
+            <p id="last-msg" class="text-sm-left text-truncate gray"><small></small></p>
           </div>
-        </div>
-      </li>`;
+          <div class="col-md-3 pr-3 pl-0 pt-2">
+            <p id="date-msg" class="date gray" style="text-align: right;"><small></small></p>
+            <div class="count-msgs">
+              <small id="count-msg">0</small>
+            </div>
+          </div>
+        </li>`;
     }
     $('.chat-container').html(html);
     $('#chats').scrollable(false);
@@ -200,6 +218,36 @@ $(function() {
     socket.emit('send message', message.html());
     message.html('');
   };
+
+  function getColorRandom() {
+    var c = {
+      r: Math.floor((Math.random() * 250) + 10),
+      g: Math.floor((Math.random() * 250) + 10),
+      b: Math.floor((Math.random() * 250) + 10)
+    };
+    var rgbToHex = function(rgb) {
+      var hex = Number(rgb).toString(16);
+      if (hex.length < 2) {
+        hex = "0" + hex;
+      }
+      return hex;
+    };
+    c.r = rgbToHex(c.r);
+    c.g = rgbToHex(c.g);
+    c.b = rgbToHex(c.b);
+    return `#${c.r}${c.g}${c.b}`;
+  }
+
+  function getSiglas(username) {
+    var arrayname = username.split(' '),
+      i = 0,
+      siglas = '';
+    while (arrayname[i]) {
+      siglas += arrayname[i].charAt(0);
+      if (i++ > 3) break;
+    }
+    return siglas;
+  }
   $('.my-btn').on('click', function() {
     sendMessage();
   });
@@ -223,43 +271,36 @@ $(function() {
     var today = new Date();
     var hora = today.format("hh:MM");
     var fecha = today.format("mmm dd");
-    if (data.nick != username) {
-      countautomsj++;
+    if (data.username != username) {
       counttotmsj++;
-      if (countautomsj == 1) {
-        $(`<div class="row my-1 h-20">
-          <div class="col-3 col-md-1 p-0">
-            <div class="mini-img-container-2">
-              <object data="` + ((data.nick == 'michaell') ? pathmich : (data.nick == 'paola') ? pathpao : '') +
-          `" class="mini-img-2"><i class="fas fa-user"></i></object>
-              <small class="gray hour">` + hora + `</small>
-            </div>
-          </div>
-          <div class="col-8 col-md-10 mx-1 p-0 mt-1">
-            <div class="other-msg">
-              <small>` + data.msg.trim().toLowerCase() + `</small>
-            </div>
-          </div>
-        </div>`).appendTo('#chat > div > .content');
-      } else if (countautomsj > 1) {
-        $(`<div class="row h-20 my-1">
-          <div class="col-3 col-md-1 p-0"></div>
-          <div class="col-8 col-md-10 mx-1 p-0 mt-1">
-            <div class="other-msg">
-              <small>` + data.msg.trim().toLowerCase() + `</small>
-            </div>
-          </div>
-        </div>`).appendTo('#chat > div > .content');
+      var img = '';
+      if (data.username == 'michaell') {
+        img = `<object data="${pathmich}" class="mini-img-2"><i class="fas fa-user"></i></object>`;
+      } else if (data.username == 'paola') {
+        img = `<object data="${pathpao}" class="mini-img-2"><i class="fas fa-user"></i></object>`;
+      } else {
+        img = `<object class="mini-img-2" style="background-color: ${data.color}; color: white;">${getSiglas(data.username)}</object>`;
       }
-      $('#chat-status').text(data.nick + ' escribió.');
+      $(`<div class="row py-1 h-20">
+          <div class="col-2 col-md-1 p-0 text-center">
+            <div class="mini-img-container-2" style="box-shadow: 0px 0px 20px 0px  ${data.color};">${img}</div>
+          </div>
+          <div class="col-9 col-md-10 p-0 px-2">
+            <div class="other-msg">
+              <small class="pr-5">${data.msg.trim().replace(/\s+/, ' ')}</small>
+              <small class="hour py-1 pr-4">${hora}</small>
+            </div>
+          </div>
+        </div>`).appendTo('#chat > div > .content');
+      $('#chat-status').text(data.username + ' escribió.');
     } else {
       counttotmsj = 0;
-      countautomsj = 0;
-      $(`<div class="row my-1 h-20">
+      $(`<div class="row py-1 h-20">
         <div class="col-3 col-md-2"></div>
         <div class="col-9 col-md-10">
           <div class="my-msg">
-            <small>` + data.msg.trim().toLowerCase() + `</small>
+            <small class="pr-5">${data.msg.trim().replace(/\s+/, ' ')}</small>
+            <small class="hour py-1 pr-4">${hora}</small>
           </div>
         </div>
       </div>`).appendTo('#chat > div > .content');
@@ -267,13 +308,13 @@ $(function() {
     }
     $('#chat').scrollable(false);
     $('#chat > div > .content').scrollTop($('#chat > div > .content').prop('scrollHeight'));
-    $('#' + data.nick).find('#last-msg').html(data.msg);
-    $('#' + data.nick).find('#date-msg').html(fecha);
-    $('#' + data.nick).find('#count-msg').html((counttotmsj > 99) ? "99+" : counttotmsj);
+    $('#' + data.username).find('#last-msg').html(data.msg);
+    $('#' + data.username).find('#date-msg').html(fecha);
+    $('#' + data.username).find('#count-msg').html((counttotmsj > 99) ? "99+" : counttotmsj);
   });
   socket.on('wrote', data => {
-    if (data.nick != username)
-      $('#chat-status').text(data.nick + ' está escribiendo: ' + data.msg);
+    if (data.username != username)
+      $('#chat-status').text(data.username + ' está escribiendo: ' + data.msg);
   });
 
 });

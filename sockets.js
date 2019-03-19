@@ -6,13 +6,14 @@ module.exports = io => {
 
   io.on('connection', socket => {
 
-    socket.on('new user', (data, bool) => {
-      if (data in users) {
+    socket.on('new user', (username, color, bool) => {
+      if (username in users) {
         bool(false);
       } else {
         bool(true);
-        socket.nickname = data;
-        users[socket.nickname] = socket;
+        socket.username = username;
+        socket.color = color;
+        users[socket.username] = socket;
         updateNicknames();
       }
     });
@@ -20,25 +21,33 @@ module.exports = io => {
     socket.on('send message', data => {
       io.sockets.emit('new message', {
         msg: data,
-        nick: socket.nickname
+        username: socket.username,
+        color: socket.color
       });
     });
 
     socket.on('writing', data => {
       io.sockets.emit('wrote', {
-        nick: socket.nickname,
+        username: socket.username,
         msg: data
       });
     });
 
     socket.on('disconnect', data => {
-      if (!socket.nickname) return;
-      delete users[socket.nickname];
+      if (!socket.username) return;
+      delete users[socket.username];
       updateNicknames();
     });
 
     function updateNicknames() {
-      io.sockets.emit('usernames', Object.keys(users));
+      var newarray = Object.values(users);
+      for (var i = 0; i < newarray.length; i++) {
+        newarray[i] = {
+          username: newarray[i].username,
+          color: newarray[i].color
+        };
+      }
+      io.sockets.emit('usernames', newarray);
     }
 
   });
