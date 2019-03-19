@@ -319,7 +319,7 @@ html, body {
 }
 
 @media only screen and (max-width: 500px) {
-  .menu, .busqueda, #chats, .title {
+  .menu, .busqueda, #chats, .title, #btn-emoji-container {
     display: none;
   }
 }
