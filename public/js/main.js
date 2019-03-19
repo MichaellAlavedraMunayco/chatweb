@@ -314,7 +314,7 @@ $(function() {
   });
   socket.on('wrote', data => {
     if (data.username != username)
-      $('#chat-status').text(data.username + ' está escribiendo: ' + data.msg);
+      $('#chat-status').text(data.username + ': ' + data.msg);
   });
 
 });
