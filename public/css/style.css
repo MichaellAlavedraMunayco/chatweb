@@ -301,7 +301,7 @@ html, body {
   background-color: white;
   box-shadow: 0px 5px 20px 0px #CDCFE6;
   position: absolute;
-  bottom: -500px;
+  top: -500px;
 }
 
 .emoji {

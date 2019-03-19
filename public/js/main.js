@@ -133,12 +133,12 @@ $(function() {
     numclicks++;
     if (numclicks == 1) {
       $('#emoji-container').animate({
-        bottom: '10vh'
+        top: '52vh'
       }, "slow");
     }
     if (numclicks == 2) {
       $('#emoji-container').animate({
-        bottom: '-500px'
+        top: '-500px'
       }, "slow");
       numclicks = 0;
     }
