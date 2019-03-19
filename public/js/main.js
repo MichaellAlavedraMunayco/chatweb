@@ -283,7 +283,7 @@ $(function() {
       }
       $(`<div class="row py-1 h-20">
           <div class="col-2 col-md-1 p-0 text-center">
-            <div class="mini-img-container-2" style="box-shadow: 0px 0px 20px 0px  ${data.color};">${img}</div>
+            <div class="mini-img-container-2" style="box-shadow: 0px 2px 5px 0px  ${data.color};">${img}</div>
           </div>
           <div class="col-9 col-md-10 p-0 px-2">
             <div class="other-msg">
